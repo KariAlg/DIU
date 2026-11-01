@@ -15,7 +15,8 @@ export const Route = createFileRoute("/noticias")({
 });
 
 function Noticias() {
-  const [first, ...rest] = noticias;
+  const first = noticias[0]!;
+  const rest = noticias.slice(1);
   return (
     <>
       <PageHeader title="Noticias" subtitle="Novedades deportivas universitarias." />
