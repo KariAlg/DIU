@@ -1,12 +1,24 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-// Simulated login (no real backend), persisted in localStorage.
-export type Student = { nombre: string; email: string; rol: string; carrera: string };
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+
+// Inicio de sesión simulado, guardado en localStorage.
+export type Student = {
+  nombre: string;
+  email: string;
+  rol: string;
+  carrera: string;
+};
 
 type AuthCtx = {
   user: Student | null;
   ready: boolean;
-  login: (email: string) => void;
+  login: (email: string, nombre: string) => void;
   logout: () => void;
 };
 
@@ -19,30 +31,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const raw = localStorage.getItem(KEY);
-    if (raw) setUser(JSON.parse(raw));
+
+    if (raw) {
+      try {
+        setUser(JSON.parse(raw));
+      } catch {
+        localStorage.removeItem(KEY);
+      }
+    }
+
     setReady(true);
   }, []);
 
-  const login = (email: string) => {
+  const login = (email: string, nombre: string) => {
     const u: Student = {
-      nombre: "Sofía Martínez",
+      nombre,
       email,
-      rol: "201973045-2",
-      carrera: "Ingeniería Civil Informática",
+      rol: "No informado",
+      carrera: "No informada",
     };
+
     localStorage.setItem(KEY, JSON.stringify(u));
     setUser(u);
   };
+
   const logout = () => {
     localStorage.removeItem(KEY);
     setUser(null);
   };
 
-  return <Ctx.Provider value={{ user, ready, login, logout }}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={{ user, ready, login, logout }}>
+      {children}
+    </Ctx.Provider>
+  );
 }
 
 export function useAuth() {
   const c = useContext(Ctx);
-  if (!c) throw new Error("useAuth must be used within AuthProvider");
+
+  if (!c) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+
   return c;
 }

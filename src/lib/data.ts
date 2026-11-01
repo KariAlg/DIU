@@ -1,5 +1,6 @@
 import gym from "@/assets/gym.jpg";
 import courts from "@/assets/courts.jpg";
+import cancha from "@/assets/cancha.jpg";
 import spinning from "@/assets/spinning.jpg";
 import hero from "@/assets/hero.jpg";
 
@@ -36,7 +37,7 @@ export const espacios: Espacio[] = [
     id: "futbol",
     nombre: "Cancha de fútbol",
     descripcion: "Cancha de pasto sintético para partidos y entrenamientos.",
-    imagen: courts,
+    imagen: cancha,
     capacidad: "Hasta 22 jugadores",
     horario: "Lun a Sáb · 09:00 – 22:00",
     bloques: ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00"],
